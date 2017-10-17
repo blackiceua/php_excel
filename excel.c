@@ -54,7 +54,7 @@ static long xlFormatBorderColor(FormatHandle f)
 #define PHP_EXCEL_FORMULA 2
 #define PHP_EXCEL_NUMERIC_STRING 3
 
-#define PHP_EXCEL_VERSION "1.0.3dev"
+#define PHP_EXCEL_VERSION "1.0.4dev"
 
 #ifdef COMPILE_DL_EXCEL
 ZEND_GET_MODULE(excel)
@@ -4656,7 +4656,7 @@ EXCEL_METHOD(Sheet, table)
 {
 	zval *object = getThis();
 	SheetHandle sheet;
-	zend_long index=0, rowFirst, rowLast, colFirst, colLast, headerRowCount, totalsRowCount;
+	int index=0, rowFirst, rowLast, colFirst, colLast, headerRowCount, totalsRowCount;
 	const char *name;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &index) == FAILURE) {
@@ -4673,8 +4673,8 @@ EXCEL_METHOD(Sheet, table)
 	array_init(return_value);
 	add_assoc_string(return_value, "name", (char *)name);
 	add_assoc_long(return_value, "row_first", rowFirst);
-	add_assoc_long(return_value, "col_first", colFirst);
 	add_assoc_long(return_value, "row_last", rowLast);
+	add_assoc_long(return_value, "col_first", colFirst);
 	add_assoc_long(return_value, "col_last", colLast);
 	add_assoc_long(return_value, "header_row_count", headerRowCount);
 	add_assoc_long(return_value, "totals_row_count", totalsRowCount);
@@ -5186,7 +5186,7 @@ EXCEL_METHOD(FilterColumn, getCustomFilter)
 	zval *object = getThis();
 	FilterColumnHandle filtercolumn;
 	int op1, op2, andOp;
-	char *v1 = NULL, *v2 = NULL;
+	const char *v1 = NULL, *v2 = NULL;
 
 	FILTERCOLUMN_FROM_OBJECT(filtercolumn, object);
 
@@ -5196,9 +5196,9 @@ EXCEL_METHOD(FilterColumn, getCustomFilter)
 
 	array_init(return_value);
 	add_assoc_long(return_value, "operator_1", op1);
-	add_assoc_string(return_value, "value_1", v1);
+	add_assoc_string(return_value, "value_1", (char *)v1);
 	add_assoc_long(return_value, "operator_2", op2);
-	add_assoc_string(return_value, "value_2", v2);
+	add_assoc_string(return_value, "value_2", (char *)v2);
 	add_assoc_bool(return_value, "and_operator", andOp);
 }
 /* }}} */
