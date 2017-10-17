@@ -54,7 +54,7 @@ static long xlFormatBorderColor(FormatHandle f)
 #define PHP_EXCEL_FORMULA 2
 #define PHP_EXCEL_NUMERIC_STRING 3
 
-#define PHP_EXCEL_VERSION "1.0.3dev"
+#define PHP_EXCEL_VERSION "1.0.4dev"
 
 #ifdef COMPILE_DL_EXCEL
 ZEND_GET_MODULE(excel)
@@ -4673,8 +4673,8 @@ EXCEL_METHOD(Sheet, table)
 	array_init(return_value);
 	add_assoc_string(return_value, "name", (char *)name);
 	add_assoc_long(return_value, "row_first", rowFirst);
-	add_assoc_long(return_value, "col_first", colFirst);
 	add_assoc_long(return_value, "row_last", rowLast);
+	add_assoc_long(return_value, "col_first", colFirst);
 	add_assoc_long(return_value, "col_last", colLast);
 	add_assoc_long(return_value, "header_row_count", headerRowCount);
 	add_assoc_long(return_value, "totals_row_count", totalsRowCount);
