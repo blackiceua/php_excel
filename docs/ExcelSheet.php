@@ -1103,7 +1103,7 @@ class ExcelSheet
 	* @param ExcelFormat $format
 	* @return void
 	*/
-	public function setCellFormat($row, $column, $format)
+	public function setCellFormat($row, $column, ExcelFormat $format)
 	{
 	} // setCellFormat
 
@@ -1131,7 +1131,7 @@ class ExcelSheet
 	* @param ExcelFormat $format (optional, default=null)
 	* @return bool
 	*/
-	public function setColWidth($column_start, $column_end, $width, $hidden = false, $format = null)
+	public function setColWidth($column_start, $column_end, $width, $hidden = false, ExcelFormat $format = null)
 	{
 	} // setColWidth
 
@@ -1331,7 +1331,7 @@ class ExcelSheet
 	* @param int $column_from 0-based column number
 	* @param int $row_to 0-based row number
 	* @param int $column_to 0-based column number
-	* @param int $scope_id
+	* @param int $scope_id (optional, default=null)
 	* @return bool
 	*/
 	public function setNamedRange($name, $row_from, $row_to, $column_from, $column_to, $scope_id = null)
@@ -1475,7 +1475,7 @@ class ExcelSheet
 	* @param bool $hidden (optional, default=false)
 	* @return bool
 	*/
-	public function setRowHeight($row, $height, $format = null, $hidden = false)
+	public function setRowHeight($row, $height, ExcelFormat $format = null, $hidden = false)
 	{
 	} // setRowHeight
 
@@ -1606,7 +1606,7 @@ class ExcelSheet
 	* @param int $data_type (optional, default=-1) One of ExcelFormat::AS_* constants
 	* @return bool
 	*/
-	public function write($row, $column, $data, $format = null, $data_type = -1)
+	public function write($row, $column, $data, ExcelFormat $format = null, $data_type = -1)
 	{
 	} // write
 
@@ -1620,7 +1620,7 @@ class ExcelSheet
 	* @param int $data_type (optional, default=-1) One of ExcelFormat::AS_* constants
 	* @return bool
 	*/
-	public function writeCol($column, $data, $row_start = 0, $format = null, $data_type = -1)
+	public function writeCol($column, array $data, $row_start = 0, ExcelFormat $format = null, $data_type = -1)
 	{
 	} // writeCol
 
@@ -1648,7 +1648,7 @@ class ExcelSheet
 	* @param ExcelFormat $format  (optional, default = null)
 	* @return bool
 	*/
-	public function writeError($row = 0, $col = 0, $error = 0, $format = null)
+	public function writeError($row = 0, $col = 0, $error = 0, ExcelFormat $format = null)
 	{
 	} // writeError
 
@@ -1661,7 +1661,7 @@ class ExcelSheet
 	* @param ExcelFormat $format (optional, default=null)
 	* @return bool
 	*/
-	public function writeRow($row, $data, $column_start = 0, $format = null)
+	public function writeRow($row, array $data, $column_start = 0, ExcelFormat $format = null)
 	{
 	} // writeRow
 
