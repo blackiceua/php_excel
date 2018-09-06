@@ -1,6 +1,6 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
+  | PHP Version 7                                                        |
   +----------------------------------------------------------------------+
   | Copyright (c) 1997-2014 The PHP Group                                |
   +----------------------------------------------------------------------+
@@ -31,14 +31,14 @@
 #include "php_excel.h"
 #include "zend_exceptions.h"
 
-// support for LibXL v 3.6.0+
+// support for LibXL v 3.8.2+
 #ifndef LIBXL_VERSION
-#pragma message ("LibXL version 3.6.0+ required")
+#pragma message ("LibXL version 3.8.2+ required")
 #endif
 
-// support for LibXL v 3.6.0+
-#if LIBXL_VERSION < 0x03060000
-#pragma message ("LibXL version 3.6.0+ required")
+// support for LibXL v 3.8.2+
+#if LIBXL_VERSION < 0x03080200
+#pragma message ("LibXL version 3.8.2+ required")
 #endif
 
 static long xlFormatBorder(FormatHandle f)
@@ -54,7 +54,7 @@ static long xlFormatBorderColor(FormatHandle f)
 #define PHP_EXCEL_FORMULA 2
 #define PHP_EXCEL_NUMERIC_STRING 3
 
-#define PHP_EXCEL_VERSION "1.0.4dev"
+#define PHP_EXCEL_VERSION "1.0.3dev"
 
 #ifdef COMPILE_DL_EXCEL
 ZEND_GET_MODULE(excel)
@@ -2366,14 +2366,14 @@ zend_bool php_excel_write_cell(SheetHandle sheet, BookHandle book, int row, int 
 {
 	zend_string *data_zs;
 
+	try_again:
 	switch (Z_TYPE_P(data)) {
 		case IS_NULL:
 			if (INI_INT("excel.skip_empty") > 0) {
 				return 1;
 			}
 			if (!format) {
-				FormatHandle fmt = xlBookAddFormat(book, NULL);
-				return xlSheetWriteBlank(sheet, row, col, fmt);
+				return xlSheetWriteBlank(sheet, row, col, NULL);
 			} else {
 				return xlSheetWriteBlank(sheet, row, col, format);
 			}
@@ -2433,16 +2433,12 @@ zend_bool php_excel_write_cell(SheetHandle sheet, BookHandle book, int row, int 
 		case IS_FALSE:
 			return xlSheetWriteBool(sheet, row, col, 0, format);
 
-		case IS_ARRAY:
-			php_error_docref(NULL, E_WARNING, "Type mismatch: array not supported for atomic write operation in row %d, column %d", row, col);
-			return 1;
+		case IS_REFERENCE:
+			ZVAL_DEREF(data);
+			goto try_again;
 
-		case IS_OBJECT:
-			php_error_docref(NULL, E_WARNING, "Type mismatch: object not supported for atomic write operation in row %d, column %d", row, col);
-			return 1;
-
-		case IS_RESOURCE:
-			php_error_docref(NULL, E_WARNING, "Type mismatch: resource not supported for atomic write operation in row %d, column %d", row, col);
+		default:
+			php_error_docref(NULL, E_WARNING, "Type mismatch: %s not supported for atomic write operation in row %d, column %d", Z_TYPE_P(data), row, col);
 			return 1;
 	}
 

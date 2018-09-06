@@ -407,7 +407,7 @@ class ExcelFormat
 	* @param ExcelFont $font
 	* @return bool
 	*/
-	public function setFont(ExcelFont $font)
+	public function setFont($font)
 	{
 	} // setFont
 
