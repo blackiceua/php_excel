@@ -70,7 +70,7 @@ class ExcelBook
 	* @param ExcelFont $font (optional, default=null) Font to copy
 	* @return ExcelFont
 	*/
-	public function addFont(ExcelFont $font = null)
+	public function addFont($font = null)
 	{
 	} // addFont
 
@@ -316,7 +316,7 @@ class ExcelBook
 	* @param ExcelSheet $sheet (optional)
 	* @return ExcelSheet
 	*/
-	public function insertSheet($index, $name, ExcelSheet $sheet = null)
+	public function insertSheet($index, $name, $sheet = null)
 	{
 	} // insertSheet
 

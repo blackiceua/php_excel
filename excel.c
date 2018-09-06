@@ -1,6 +1,6 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
+  | PHP Version 7                                                        |
   +----------------------------------------------------------------------+
   | Copyright (c) 1997-2014 The PHP Group                                |
   +----------------------------------------------------------------------+
@@ -31,14 +31,14 @@
 #include "php_excel.h"
 #include "zend_exceptions.h"
 
-// support for LibXL v 3.6.0+
+// support for LibXL v 3.8.2+
 #ifndef LIBXL_VERSION
-#pragma message ("LibXL version 3.6.0+ required")
+#pragma message ("LibXL version 3.8.2+ required")
 #endif
 
-// support for LibXL v 3.6.0+
-#if LIBXL_VERSION < 0x03060000
-#pragma message ("LibXL version 3.6.0+ required")
+// support for LibXL v 3.8.2+
+#if LIBXL_VERSION < 0x03080200
+#pragma message ("LibXL version 3.8.2+ required")
 #endif
 
 static long xlFormatBorder(FormatHandle f)
@@ -54,7 +54,7 @@ static long xlFormatBorderColor(FormatHandle f)
 #define PHP_EXCEL_FORMULA 2
 #define PHP_EXCEL_NUMERIC_STRING 3
 
-#define PHP_EXCEL_VERSION "1.0.4dev"
+#define PHP_EXCEL_VERSION "1.0.3dev"
 
 #ifdef COMPILE_DL_EXCEL
 ZEND_GET_MODULE(excel)
