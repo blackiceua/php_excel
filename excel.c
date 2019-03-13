@@ -551,6 +551,33 @@ EXCEL_METHOD(Book, loadFile)
 }
 /* }}} */
 
+/* {{{ proto bool ExcelBook::loadFileUsingTempFile(string filename, string tempFilename)
+	Load Excel from file using temp file for lower memory consumption. */
+EXCEL_METHOD(Book, loadFileUsingTempFile)
+{
+	BookHandle book;
+	zval *object = getThis();
+	zend_string *filename_zs = NULL;
+	zend_string *tempFilename_zs = NULL;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &filename_zs) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &tempFilename_zs) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	EXCEL_NON_EMPTY_STRING(filename_zs)
+
+	EXCEL_NON_EMPTY_STRING(tempFilename_zs)
+
+	BOOK_FROM_OBJECT(book, object);
+
+	RETVAL_BOOL(xlBookLoadUsingTempFile(book, ZSTR_VAL(filename_zs), ZSTR_VAL(tempFilename_zs)));
+}
+/* }}} */
+
 /* {{{ proto mixed ExcelBook::save([string filename])
 	Save Excel file. */
 EXCEL_METHOD(Book, save)
@@ -590,6 +617,31 @@ EXCEL_METHOD(Book, save)
 	} else {
 		RETURN_STRINGL(contents, len);
 	}
+
+}
+/* }}} */
+
+/* {{{ proto mixed ExcelBook::saveUsingTempFile([string filename],)
+	Save Excel file using tempfile for lower memory consumption. */
+EXCEL_METHOD(Book, saveUsingTempFile)
+{
+	BookHandle book;
+	zval *object = getThis();
+	zend_string *filename_zs = NULL;
+	unsigned int len = 0;
+	char *contents = NULL;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|S", &filename_zs) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	BOOK_FROM_OBJECT(book, object);
+
+	if (!xlBookSaveUsingTempFile(book, ZSTR_VAL(filename_zs), 1)) {
+		RETURN_FALSE;
+	}
+
+	RETURN_TRUE;
 
 }
 /* }}} */
@@ -5477,7 +5529,16 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_loadFile, 0, 0, 1)
 	ZEND_ARG_INFO(0, filename)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_loadFileUsingTempFile, 0, 0, 2)
+	ZEND_ARG_INFO(0, filename)
+	ZEND_ARG_INFO(0, tempFilename)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_save, 0, 0, 0)
+	ZEND_ARG_INFO(0, filename)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_saveUsingTempFile, 0, 0, 0)
 	ZEND_ARG_INFO(0, filename)
 ZEND_END_ARG_INFO()
 
@@ -6551,8 +6612,10 @@ zend_function_entry excel_funcs_book[] = {
 	EXCEL_ME(Book, getAllFormats, arginfo_Book_getAllFormats, 0)
 	EXCEL_ME(Book, getError, arginfo_Book_getError, 0)
 	EXCEL_ME(Book, loadFile, arginfo_Book_loadFile, 0)
+	EXCEL_ME(Book, loadFileUsingTempFile, arginfo_Book_loadFileUsingTempFile, 0)
 	EXCEL_ME(Book, load, arginfo_Book_load, 0)
 	EXCEL_ME(Book, save, arginfo_Book_save, 0)
+	EXCEL_ME(Book, saveUsingTempFile, arginfo_Book_saveUsingTempFile, 0)
 	EXCEL_ME(Book, getSheet, arginfo_Book_getSheet, 0)
 	EXCEL_ME(Book, getSheetByName, arginfo_Book_getSheetByName, 0)
 	EXCEL_ME(Book, addSheet, arginfo_Book_addSheet, 0)
