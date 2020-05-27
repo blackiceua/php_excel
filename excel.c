@@ -1570,7 +1570,7 @@ EXCEL_METHOD(Book, getSheetName)
 		RETURN_FALSE;
 	}
 
-	if (index < 1) {
+	if (index < 0) {
 		RETURN_FALSE;
 	}
 
